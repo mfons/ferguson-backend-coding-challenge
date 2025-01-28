@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * @see AccountService
  */
 @RestController
-@RestControllerAdvice
 public class AccountController {
 
     private final AccountService accountService;

@@ -1,9 +1,7 @@
 package com.michaelfons.ferguson_backend_coding_challenge.controllers;
 
-import com.michaelfons.ferguson_backend_coding_challenge.model.Account;
-import com.michaelfons.ferguson_backend_coding_challenge.model.AccountCreationStatus;
-import com.michaelfons.ferguson_backend_coding_challenge.model.Customer;
-import com.michaelfons.ferguson_backend_coding_challenge.services.AccountService;
+import com.michaelfons.ferguson_backend_coding_challenge.model.TransferResults;
+import com.michaelfons.ferguson_backend_coding_challenge.services.TransferService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,37 +19,50 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-//@WebMvcTest(TransferController.class)
-//@AutoConfigureMockMvc
+@WebMvcTest(TransferController.class)
+@AutoConfigureMockMvc
 public class TransferControllerTest {
-//    @Autowired
-//    private MockMvc mockMvc;
-//
-//    private static final Double INITIAL_DEPOSIT = 1_234.00D;
-//
-//    private Account sourceAccount, targetAccount;
-//
-//    @MockitoBean
-//    private TransferService service;
-//
-//    @BeforeEach
-//    void setUp() {
-//        sourceAccount = new Account(1, new Customer(1, "Michael", "Fons"), INITIAL_DEPOSIT);
-//        targetAccount = new Account(1, new Customer(1, "Michael", "Fons"), INITIAL_DEPOSIT);
-//    }
-//
-//    @Test
-//    void aCustomer_theyWantANewAccount_returns200() throws Exception {
-//        when(service.transfer(account)).thenReturn(AccountCreationStatus.SUCCESS);
-//        this.mockMvc
-//                .perform(post("/account")
-//                        .accept(MediaType.APPLICATION_JSON)
-//                        .content("{\"id\": 1, \"customer\":{\"id\":1,\"firstName\":\"Michael\",\"lastName\":\"Fons\"}, \"balance\":"+ INITIAL_DEPOSIT + " }")
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockitoBean
+    private TransferService service;
+
+    private TransferResults transferResults;
+    public static final double TRANSFER_AMOUNT = 50.00;
+    Integer sourceAccount;
+    Integer targetAccount;
+    Double amount = TRANSFER_AMOUNT;
+
+    @BeforeEach
+    void setUp() {
+        transferResults = new TransferResults(
+                1,
+                3, 100.00, 50.00,
+                2, 250.00, 300.00
+        );
+        sourceAccount = 3;
+        targetAccount = 2;
+    }
+
+    @Test
+    void aCustomer_theyWantToTransferMoneyToATargetAccount_responseIsCorrect() throws Exception {
+        when(service.transfer(sourceAccount, targetAccount, amount)).thenReturn(transferResults);
+        this.mockMvc
+                .perform(post("/transfer/" + sourceAccount + "/" + targetAccount + "/" + amount)
+                        .accept(MediaType.APPLICATION_JSON)
+//                        .content(String.format("{\"targetAccount\":%d, \"amount\":%f }",
+//                                targetAccount, TRANSFER_AMOUNT))
 //                        .contentType(MediaType.APPLICATION_JSON))
-//                .andDo(print())
-//                .andExpect(status().isOk())
-//                .andExpect(content().string(containsString("Account created")));
-//        verify(service).createAccount(account);
-//    }
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(String.format("{ \"id\": %d, \"sourceAccount\":%d, \"sourceBeginningBalance\":%f, \"sourceEndingBalance\":%f, \"targetAccount\":%d, \"targetBeginningBalance\":%f, \"targetEndingBalance\":%f }",
+                        transferResults.getId(), transferResults.getSourceAccount(),
+                        transferResults.getSourceBeginningBalance(), transferResults.getSourceEndingBalance(),
+                        transferResults.getTargetAccount(), transferResults.getTargetBeginningBalance(), transferResults.getTargetEndingBalance())));
+        verify(service).transfer(sourceAccount, targetAccount, amount);
+    }
 
 }
