@@ -48,7 +48,8 @@ The application is written in Java and uses the SpringBoot framework.
      "targetEndingBalance": 323.0
      }
 3. Retrieve transfer history for a given account.
-   under construction
+   
+    - under construction
 
 
 
