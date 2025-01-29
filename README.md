@@ -11,7 +11,46 @@
 
 The application is written in Java and uses the SpringBoot framework.
 
-### How to run the application
+### API
+1. Create a new bank account for a customer, with an initial deposit amount. A
+      single customer may have multiple bank accounts.  Note this is also how you create a new customer.
+        It is planned to expand this api, but for now all updates to a customer 
+        will be done through the account creation api.
+    - POST /account
+    - Request Body: 
+   ```json
+   {
+      "id": 5,
+      "customer": {
+      "id": 2,
+      "firstName": "Leopoldina",
+      "lastName": "Toast"
+      },
+      "balance": 123.45
+      }
+    - Response: 200
+    - Response Body: Account created
+2. Transfer amounts between any two accounts, including those owned by
+      different customers.
+   - POST /transfer/{fromAccountId}/{toAccountId}/{amount}
+   - Request Body: none
+   - Response: 200
+   - Response Body: 
+   - Example:
+   ```json
+   {
+     "id": 1,
+     "sourceAccount": 1,
+     "sourceBeginningBalance": 1234.0,
+     "sourceEndingBalance": 1211.0,
+     "targetAccount": 2,
+     "targetBeginningBalance": 300.0,
+     "targetEndingBalance": 323.0
+     }
+3. Retrieve transfer history for a given account.
+   under construction
+
+
 
 
 ### How to setup testing the transactional behavior on a locally installed mongodb server.
