@@ -97,3 +97,10 @@ replication:
         "operationTime" : Timestamp(1633660001, 1)
 }
 ```
+
+### TODO's
+1. Add more tests for the business logic.
+2. Add autoincrementing id's for all the repositories.
+3. Add more error handling.
+4. Add more logging.
+5. Add event driven async services also to allow customer to do synchronous and asynchronous transactions.
