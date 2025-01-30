@@ -17,7 +17,7 @@ The application is written in Java and uses the SpringBoot framework.
         It is planned to expand this api, but for now all updates to a customer 
         will be done through the account creation api.
     - POST /account
-    - Request Body: 
+    - Request Body Example: 
    ```json
    {
       "id": 5,
@@ -35,8 +35,7 @@ The application is written in Java and uses the SpringBoot framework.
    - POST /transfer/{fromAccountId}/{toAccountId}/{amount}
    - Request Body: none
    - Response: 200
-   - Response Body: 
-   - Example:
+   - Response Body Example:
    ```json
    {
      "id": 1,
@@ -48,9 +47,20 @@ The application is written in Java and uses the SpringBoot framework.
      "targetEndingBalance": 323.0
      }
 3. Retrieve transfer history for a given account.
-   
-    - under construction
-
+    - GET /reports/transferHistoryByAccount/{sourceAccount}
+    - Request Body example for account 1:
+    ```json
+    [
+    {
+        "id": 1,
+        "sourceAccount": 1,
+        "sourceBeginningBalance": 1096.0,
+        "sourceEndingBalance": 1073.0,
+        "targetAccount": 2,
+        "targetBeginningBalance": 438.0,
+        "targetEndingBalance": 461.0
+    }
+   ]
 
 
 
