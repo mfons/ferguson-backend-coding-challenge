@@ -1,8 +1,7 @@
 package com.michaelfons.ferguson_backend_coding_challenge.services;
 
 import com.michaelfons.ferguson_backend_coding_challenge.model.Account;
-import com.michaelfons.ferguson_backend_coding_challenge.model.AccountCreationStatus;
-import com.michaelfons.ferguson_backend_coding_challenge.model.TransferResults;
+import com.michaelfons.ferguson_backend_coding_challenge.model.TransferHistory;
 import com.michaelfons.ferguson_backend_coding_challenge.repository.AccountRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -69,7 +68,7 @@ public class TransferServiceTest {
         var result = transferService.transfer(sourceAccountId, targetAccountId, amount);
 
         // Assert
-        assertEquals(result, new TransferResults(1, sourceAccountId, sourceAccountBalance, sourceAccountBalance - amount,
+        assertEquals(result, new TransferHistory(1, sourceAccountId, sourceAccountBalance, sourceAccountBalance - amount,
                 targetAccountId, targetAccountBalance, targetAccountBalance + amount));
         verify(accountRepository).findById(sourceAccountId);
         verify(accountRepository).findById(targetAccountId);
@@ -83,5 +82,4 @@ public class TransferServiceTest {
         verify(targetAccount).getId();
 
     }
-
 }

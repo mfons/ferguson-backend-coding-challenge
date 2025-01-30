@@ -1,6 +1,6 @@
 package com.michaelfons.ferguson_backend_coding_challenge.controllers;
 
-import com.michaelfons.ferguson_backend_coding_challenge.model.TransferResults;
+import com.michaelfons.ferguson_backend_coding_challenge.model.TransferHistory;
 import com.michaelfons.ferguson_backend_coding_challenge.services.TransferService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -28,7 +27,7 @@ public class TransferControllerTest {
     @MockitoBean
     private TransferService service;
 
-    private TransferResults transferResults;
+    private TransferHistory transferHistory;
     public static final double TRANSFER_AMOUNT = 50.00;
     Integer sourceAccount;
     Integer targetAccount;
@@ -36,7 +35,7 @@ public class TransferControllerTest {
 
     @BeforeEach
     void setUp() {
-        transferResults = new TransferResults(
+        transferHistory = new TransferHistory(
                 1,
                 3, 100.00, 50.00,
                 2, 250.00, 300.00
@@ -47,7 +46,7 @@ public class TransferControllerTest {
 
     @Test
     void aCustomer_theyWantToTransferMoneyToATargetAccount_responseIsCorrect() throws Exception {
-        when(service.transfer(sourceAccount, targetAccount, amount)).thenReturn(transferResults);
+        when(service.transfer(sourceAccount, targetAccount, amount)).thenReturn(transferHistory);
         this.mockMvc
                 .perform(post("/transfer/" + sourceAccount + "/" + targetAccount + "/" + amount)
                         .accept(MediaType.APPLICATION_JSON)
@@ -59,9 +58,9 @@ public class TransferControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(String.format("{ \"id\": %d, \"sourceAccount\":%d, \"sourceBeginningBalance\":%f, \"sourceEndingBalance\":%f, \"targetAccount\":%d, \"targetBeginningBalance\":%f, \"targetEndingBalance\":%f }",
-                        transferResults.getId(), transferResults.getSourceAccount(),
-                        transferResults.getSourceBeginningBalance(), transferResults.getSourceEndingBalance(),
-                        transferResults.getTargetAccount(), transferResults.getTargetBeginningBalance(), transferResults.getTargetEndingBalance())));
+                        transferHistory.getId(), transferHistory.getSourceAccount(),
+                        transferHistory.getSourceBeginningBalance(), transferHistory.getSourceEndingBalance(),
+                        transferHistory.getTargetAccount(), transferHistory.getTargetBeginningBalance(), transferHistory.getTargetEndingBalance())));
         verify(service).transfer(sourceAccount, targetAccount, amount);
     }
 

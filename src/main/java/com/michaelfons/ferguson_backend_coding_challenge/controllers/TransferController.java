@@ -1,11 +1,9 @@
 package com.michaelfons.ferguson_backend_coding_challenge.controllers;
 
-import com.michaelfons.ferguson_backend_coding_challenge.model.TransferResults;
-import com.michaelfons.ferguson_backend_coding_challenge.services.AccountService;
+import com.michaelfons.ferguson_backend_coding_challenge.model.TransferHistory;
 import com.michaelfons.ferguson_backend_coding_challenge.services.TransferService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -22,7 +20,7 @@ public class TransferController {
     }
 
     @PostMapping("/transfer/{sourceAccount}/{targetAccount}/{amount}")
-    public TransferResults transfer(@PathVariable Integer sourceAccount, @PathVariable Integer targetAccount, @PathVariable Double amount) {
+    public TransferHistory transfer(@PathVariable Integer sourceAccount, @PathVariable Integer targetAccount, @PathVariable Double amount) {
         return transferService.transfer(sourceAccount, targetAccount, amount);
     }
 }
