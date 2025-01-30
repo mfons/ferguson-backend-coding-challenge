@@ -7,6 +7,8 @@ import com.michaelfons.ferguson_backend_coding_challenge.repository.TransferHist
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class TransferService {
 
@@ -36,5 +38,9 @@ public class TransferService {
 
         transferHistoryRepository.save(transferHistory);
         return transferHistory;
+    }
+
+    public List<TransferHistory> getTransferHistory(Integer sourceAccount) {
+        return transferHistoryRepository.findAllBySourceAccount(sourceAccount);
     }
 }
