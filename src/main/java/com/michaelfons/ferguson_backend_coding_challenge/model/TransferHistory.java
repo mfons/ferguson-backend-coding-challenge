@@ -4,15 +4,20 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.math.BigInteger;
 
 @Document
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class TransferHistory {
+    @Transient
+    public static final String SEQUENCE_NAME = "transfer_history_sequence";
+
     @Id
-    private Integer id;
+    private BigInteger id = BigInteger.valueOf(-1);
 
     private Integer sourceAccount;
 
@@ -23,4 +28,13 @@ public class TransferHistory {
 
     private Double targetBeginningBalance;
     private Double targetEndingBalance;
+
+    public TransferHistory(Integer sourceAccount, Double sourceBeginningBalance, Double sourceEndingBalance, Integer targetAccount, Double targetBeginningBalance, Double targetEndingBalance) {
+        this.sourceAccount = sourceAccount;
+        this.sourceBeginningBalance = sourceBeginningBalance;
+        this.sourceEndingBalance = sourceEndingBalance;
+        this.targetAccount = targetAccount;
+        this.targetBeginningBalance = targetBeginningBalance;
+        this.targetEndingBalance = targetEndingBalance;
+    }
 }
